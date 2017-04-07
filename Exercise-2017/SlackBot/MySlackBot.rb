@@ -12,6 +12,7 @@ class GoogleGeocode
     @base_url = 'https://maps.googleapis.com/maps/api/geocode/json'
     @api_key='AIzaSyALN7jZSORUTLd2XPV5QC2447OX-WjNp-o'
   end
+ 
 
   def get_location(address, options={})
     url="#{@base_url}?address=#{URI.encode(address)}&key=#{@api_key}&language=ja"
