@@ -206,15 +206,18 @@ class MySlackBot < SlackBot
     
     user_name = params[:user_name] ? "@#{params[:user_name]}" : ""
     text = params[:text]
-    text = text.match(/@NBot\s+(.*)付近の(.*)/)
+    if text !~ /@NBot\s+(.*)(付近|近く)の(.*)/
+      return {text: "#{user_name}\n「@NBot 〇〇付近の〇〇」と入力して下さい．\n"}.merge(options).to_json
+    end
+    text = text.match(/@NBot\s+(.*)(付近|近く)の(.*)/)
     address = text[1]
-    placetype = text[2]
+    placetype = text[3]
 
     types = place_table["#{placetype}"]
 
     location = geocode.get_location_byaddress(address)
     if location==nil
-      return {text: "ERROR:地点が特定できませんでした．(#{address})\n"}.merge(options).to_json
+      return {text: "#{user_name}\n地点が特定できませんでした．(#{address})\n"}.merge(options).to_json
     end
     if types!=nil
       places = places.get_nearby_places_bytypes(location["latitude"],location["longitude"],types)
@@ -222,7 +225,7 @@ class MySlackBot < SlackBot
       places = places.get_nearby_places_bykeyword(location["latitude"],location["longitude"],placetype)
     end
     if places==nil
-      return {text: "ERROR:結果が見つかりませんでした．\n"}.merge(options).to_json
+      return {text: "#{user_name}\n結果が見つかりませんでした．\n"}.merge(options).to_json
     end
 
     msg = Array.new(3)
