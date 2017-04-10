@@ -235,7 +235,7 @@ class MySlackBot < SlackBot
 
     map = maps.create_map(location, places) 
 
-    return {text: "#{user_name}\n最寄りの#{placetype}3件は以下の通りです．\nA:#{msg[0]}\nB:#{msg[1]}\nC:#{msg[2]}\n#{map}"}.merge(options).to_json
+    return {text: "#{user_name}\n#{address}から最寄りの#{placetype}3件は以下の通りです．\nA:#{msg[0]}\nB:#{msg[1]}\nC:#{msg[2]}\n#{map}"}.merge(options).to_json
   end
 end
 
