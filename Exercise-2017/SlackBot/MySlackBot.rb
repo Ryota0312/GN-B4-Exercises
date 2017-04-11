@@ -233,9 +233,14 @@ class SlackRespond
       msg[i] = "#{places[i]["name"]} : #{places[i]["address"]}\n"
     end
     
-    map = maps.create_map(location, places) 
+    map = maps.create_map(location, places)
+
+    dir_a = "<https://www.google.co.jp/maps/dir/#{URI.encode(address)}/@#{location["latitude"]},#{location["longitude"]}/#{URI.encode(places[0]["name"])}/@#{places[0]["latitude"]},#{places[0]["longitude"]}|A>"
+    dir_b = "<https://www.google.co.jp/maps/dir/#{URI.encode(address)}/@#{location["latitude"]},#{location["longitude"]}/#{URI.encode(places[1]["name"])}/@#{places[1]["latitude"]},#{places[1]["longitude"]}|B>"
+    dir_c = "<https://www.google.co.jp/maps/dir/#{URI.encode(address)}/@#{location["latitude"]},#{location["longitude"]}/#{URI.encode(places[2]["name"])}/@#{places[2]["latitude"]},#{places[2]["longitude"]}|C>"
     
-    return {text: "#{user_name}\n最寄りの#{placetype}3件は以下の通りです．\nA:#{msg[0]}\nB:#{msg[1]}\nC:#{msg[2]}\n#{map}"}.merge(options).to_json
+    
+    return {text: "#{user_name}\n最寄りの#{placetype}3件は以下の通りです．A,B,Cのリンクをクリックして経路を確認できます．\n#{dir_a}:#{msg[0]}\n#{dir_b}:#{msg[1]}\n#{dir_c}:#{msg[2]}\n#{map}"}.merge(options).to_json
    end
 end
 
