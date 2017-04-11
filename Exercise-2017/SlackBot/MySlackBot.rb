@@ -7,6 +7,40 @@ require 'json'
 require 'net/https'
 require 'uri'
 
+module GetInfobyJson
+  def get_location_info(json)
+    status = JSON.parse(json.body)
+    if status['status']!='OK'
+      return nil
+    end
+    addr = status['results'][0]['formatted_address']
+    lat = status['results'][0]['geometry']['location']['lat']
+    lng = status['results'][0]['geometry']['location']['lng']
+
+    location = Hash.new()
+    location = { "address" => addr,"latitude" => lat,"longitude" =>lng }
+
+    return location
+  end
+
+  def get_places_info(json, num)
+    status = JSON.parse(json.body)
+    if status['status']!='OK'
+      return nil
+    end
+    places = Array.new(num)
+    for i in 0..num-1 do
+      name = status['results'][i]['name']
+      addr = status['results'][i]['vicinity']
+      lat = status['results'][i]['geometry']['location']['lat']
+      lng = status['results'][i]['geometry']['location']['lng']
+      places[i] = Hash[ "name" => name, "address" => addr, "latitude" => lat, "longitude" => lng ]
+    end
+    
+    return places
+  end
+end
+
 class HttpRequest
   def http_get(url)
     uri = URI.parse(url)
@@ -22,6 +56,8 @@ class HttpRequest
 end
 
 class GooglePlaces < HttpRequest
+  include GetInfobyJson
+  
   def initialize
     @base_url_nearby='https://maps.googleapis.com/maps/api/place/nearbysearch/json'
     @base_url_autocomplete='https://maps.googleapis.com/maps/api/place/autocomplete/json'
@@ -47,19 +83,7 @@ class GooglePlaces < HttpRequest
 
     res = http_get(url)
 
-    status = JSON.parse(res.body)
-    print("code(places)=#{status['status']}\n")
-    if status['status']!='OK'
-      return nil
-    end
-    places = Array.new(3)
-    for i in 0..2 do
-      name = status['results'][i]['name']
-      addr = status['results'][i]['vicinity']
-      lat = status['results'][i]['geometry']['location']['lat']
-      lng = status['results'][i]['geometry']['location']['lng']
-      places[i] = Hash[ "name" => name, "address" => addr, "latitude" => lat, "longitude" => lng ]
-    end
+    places = get_places_info(res, 3)
 
     return places
   end
@@ -69,25 +93,15 @@ class GooglePlaces < HttpRequest
 
     res = http_get(url)
 
-    status = JSON.parse(res.body)
-    print("code(places)=#{status['status']}\n")
-    if status['status']!='OK'
-      return nil
-    end
-    places = Array.new(3)
-    for i in 0..2 do
-      name = status['results'][i]['name'] 
-      addr = status['results'][i]['vicinity']
-      lat = status['results'][i]['geometry']['location']['lat']
-      lng = status['results'][i]['geometry']['location']['lng']
-      places[i] = Hash[ "name" => name, "address" => addr, "latitude" => lat, "longitude" => lng ]
-    end
+    places = get_places_info(res, 3)
 
     return places
   end
 end
 
 class GoogleGeocode < HttpRequest
+  include GetInfobyJson
+  
   def initialize
     @base_url = 'https://maps.googleapis.com/maps/api/geocode/json'
     @api_key='AIzaSyALN7jZSORUTLd2XPV5QC2447OX-WjNp-o'
@@ -113,18 +127,7 @@ class GoogleGeocode < HttpRequest
 
     res = http_get(url)
 
-    status = JSON.parse(res.body)
-    print("code(geocoder)=#{status['status']}\n")
-    if status['status']!='OK'
-      return nil
-    end
-    addr = status['results'][0]['formatted_address']
-    lat = status['results'][0]['geometry']['location']['lat']
-    lng = status['results'][0]['geometry']['location']['lng']
-    print("locate=#{lat},#{lng}\n")
-
-    location = Hash.new()
-    location = { "address" => addr,"latitude" => lat,"longitude" =>lng }
+    location = get_location_info(res)
 
     return location
   end
