@@ -76,7 +76,7 @@ class GooglePlaces < HttpRequest
     end
     places = Array.new(3)
     for i in 0..2 do
-      name = status['results'][i]['name']
+      name = status['results'][i]['name'] 
       addr = status['results'][i]['vicinity']
       lat = status['results'][i]['geometry']['location']['lat']
       lng = status['results'][i]['geometry']['location']['lng']
