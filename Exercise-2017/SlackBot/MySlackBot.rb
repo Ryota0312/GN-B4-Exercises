@@ -54,6 +54,19 @@ class HttpRequest
     return res
   end
 
+  def http_post(url, request)
+    uri = URI.parse(url)
+    res = nil
+    json = request.to_json
+
+    Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      res = http.post(uri.request_uri, json, { "Content-Type" => "application/json" })
+    end
+
+    return res
+  end
+
   # Set parameters in query format to base URL
   def set_params(base_url, params)
     for item in params
@@ -150,6 +163,23 @@ class GoogleStaticMaps < HttpRequest
   end
 end
 
+class GoogleUrlShortener < HttpRequest
+  def initialize
+    @base_url='https://www.googleapis.com/urlshortener/v1/url'
+    @api_key='AIzaSyBjSm1VYMtakSlz4E-iYI-nKDFq2NeCyYs'
+  end
+
+  def shorten_url(long_url)
+    request = { :longUrl => long_url }
+    res = http_post("#{@base_url}?key=#{@api_key}", request)
+
+    short_url = JSON.parse(res.body)
+
+    return short_url["id"]
+  end
+end
+
+
 class SlackRespond
   # Respond message "XXX" in '「XXX」と言って'
   def repeat_respond(params, options={})
@@ -164,15 +194,23 @@ class SlackRespond
     geocode=GoogleGeocoder.new
     places=GooglePlaces.new
     maps=GoogleStaticMaps.new
+    url_shortener=GoogleUrlShortener.new
     
-    place_table = Hash[ "コンビニ" => 'convenience_store',
-                        "書店" => 'book_store',
-                        "ATM" => 'atm',
-                        "バス停" => 'bus_station',
-                        "カフェ" => 'cafe',
-                        "公園" => 'park',
-                        "バー" => 'bar',
-                        "駐車場" => 'parking']
+    place_table = { "コンビニ" => 'convenience_store',
+                    "書店" => 'book_store',
+                    "ATM" => 'atm',
+                    "バス停" => 'bus_station',
+                    "カフェ" => 'cafe',
+                    "公園" => 'park',
+                    "バー" => 'bar',
+                    "駐車場" => 'parking',
+                    "銀行" => 'bank',
+                    "バー" => 'bar',
+                    "公園" => 'park',
+                    "ショッピングモール" => 'shopping_mall',
+                    "大学" => 'university',
+                    "ガソリンスタンド" => 'gas_station',
+                    "郵便局" => 'post_office' }
     
     user_name = params[:user_name] ? "@#{params[:user_name]}" : ""
     text = params[:text]
@@ -203,14 +241,15 @@ class SlackRespond
       msg[i] = "#{places[i]["name"]} : #{places[i]["address"]}\n"
     end
     
-    map = maps.create_map(location, places)
+    map_url = maps.create_map(location, places)
+    map_short_url = url_shortener.shorten_url(map_url)
 
     dir_a = "<https://www.google.co.jp/maps/dir/#{URI.encode(address)}/@#{location["latitude"]},#{location["longitude"]}/#{URI.encode(places[0]["name"])}/@#{places[0]["latitude"]},#{places[0]["longitude"]}|A>"
     dir_b = "<https://www.google.co.jp/maps/dir/#{URI.encode(address)}/@#{location["latitude"]},#{location["longitude"]}/#{URI.encode(places[1]["name"])}/@#{places[1]["latitude"]},#{places[1]["longitude"]}|B>"
     dir_c = "<https://www.google.co.jp/maps/dir/#{URI.encode(address)}/@#{location["latitude"]},#{location["longitude"]}/#{URI.encode(places[2]["name"])}/@#{places[2]["latitude"]},#{places[2]["longitude"]}|C>"
     
     
-    return {text: "#{user_name}\n最寄りの#{placetype}3件は以下の通りです．A,B,Cのリンクをクリックして経路を確認できます．\n#{dir_a}:#{msg[0]}\n#{dir_b}:#{msg[1]}\n#{dir_c}:#{msg[2]}\n#{map}"}.merge(options).to_json
+    return {text: "#{user_name}\n最寄りの#{placetype}3件は以下の通りです．A,B,Cのリンクをクリックして経路を確認できます．\n#{dir_a}:#{msg[0]}\n#{dir_b}:#{msg[1]}\n#{dir_c}:#{msg[2]}\n#{map_short_url}"}.merge(options).to_json
   end
 end
 
