@@ -34,7 +34,7 @@ class GetInfoFromJson
       addr = status['results'][i]['vicinity']
       lat = status['results'][i]['geometry']['location']['lat']
       lng = status['results'][i]['geometry']['location']['lng']
-      places[i] = Hash[ "name" => name, "address" => addr, "latitude" => lat, "longitude" => lng ]
+      places[i] = { "name" => name, "address" => addr, "latitude" => lat, "longitude" => lng }
     end
     
     return places
@@ -163,6 +163,7 @@ class GoogleStaticMaps < HttpRequest
   end
 end
 
+# Get shorted URL by Google URL Shortener API
 class GoogleUrlShortener < HttpRequest
   def initialize
     @base_url='https://www.googleapis.com/urlshortener/v1/url'
@@ -253,6 +254,7 @@ class SlackRespond
   end
 end
 
+# Choose the respond content by recieved message
 class MySlackBot < SlackBot
   def bot_respond(params, options={})
     bot = SlackRespond.new
@@ -267,6 +269,7 @@ class MySlackBot < SlackBot
     end
   end
 end
+
 
 slackbot = MySlackBot.new
 
