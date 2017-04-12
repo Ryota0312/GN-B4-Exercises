@@ -54,6 +54,7 @@ class HttpRequest
     return res
   end
 
+  # Set parameters in query format to base URL
   def set_params(base_url, params)
     for item in params
       if item[1].instance_of?(Array)
@@ -83,7 +84,7 @@ class GooglePlaces < HttpRequest
   def get_nearby_places_bytypes(lat, lng, type, options={})
     get_info_fromjson = GetInfoFromJson.new
 
-    url_params = { :location => "#{lat},#{lng}", :types => "#{URI.parse(type)}", :key =>@api_key, :rankby => "distance", :language => "ja" }
+    url_params = { :location => "#{lat},#{lng}", :types => type, :key => @api_key, :rankby => "distance", :language => "ja" }
     url = set_params(@base_url, url_params)
     
     res = http_get(url)
@@ -97,7 +98,7 @@ class GooglePlaces < HttpRequest
   def get_nearby_places_bykeyword(lat, lng, keyword, options={})
     get_info_fromjson = GetInfoFromJson.new
 
-    url_params = { :location => "#{lat},#{lng}", :keyword => "#{URI.parse(keyword)}", :key =>@api_key, :rankby => "distance", :language => "ja" }
+    url_params = { :location => "#{lat},#{lng}", :keyword => URI.encode(keyword), :key => @api_key, :rankby => "distance", :language => "ja" }
     url = set_params(@base_url, url_params)
 
     res = http_get(url)
@@ -118,7 +119,7 @@ class GoogleGeocoder < HttpRequest
   def get_location_bykeyword(keyword, options={})
     get_info_fromjson = GetInfoFromJson.new
 
-    url_params = { :address => "#{URI.encode(keyword)}", :key =>@api_key, :language => "ja", :region => "jp" }
+    url_params = { :address => URI.encode(keyword), :key => @api_key, :language => "ja", :region => "jp" }
     url = set_params(@base_url, url_params)
 
     res = http_get(url)
@@ -138,11 +139,11 @@ class GoogleStaticMaps < HttpRequest
   # Create map image by specified 'location' and some places.
   def create_map(location, places)
 
-    marker = ["#{location["latitude"]},#{location["longitude"]}",
+    places = ["#{location["latitude"]},#{location["longitude"]}",
               "color:blue|label:A|#{places[0]["latitude"]},#{places[0]["longitude"]}",
               "color:blue|label:B|#{places[1]["latitude"]},#{places[1]["longitude"]}",
               "color:blue|label:C|#{places[2]["latitude"]},#{places[2]["longitude"]}"]
-    url_params = { :key =>@api_key, :size => "800x400", :markers => marker }
+    url_params = { :key => @api_key, :size => "800x400", :markers => places }
     url = set_params(@base_url, url_params)
 
     return url
