@@ -215,12 +215,14 @@ class SlackRespond
     
     user_name = params[:user_name] ? "@#{params[:user_name]}" : ""
     text = params[:text]
-    if text !~ /@NBot\s+(.*)(付近|近く)の(.*)/
+    if text !~ /@NBot\s+(.*)(付近|近く|周辺)の(.*)/
       return {text: "#{user_name}\n「@NBot 〇〇付近の〇〇」と入力して下さい．\n"}.merge(options).to_json
     end
-    text = text.match(/@NBot\s+(.*)(付近|近く)の(.*)/)
+    text = text.match(/@NBot\s+(.*)(付近|近く|周辺)の(.*)/)
     address = text[1]
     placetype = text[3]
+    p address
+    p placetype
     
     types = place_table["#{placetype}"]
     
@@ -245,9 +247,9 @@ class SlackRespond
     map_url = maps.create_map(location, places)
     map_short_url = url_shortener.shorten_url(map_url)
 
-    dir_a = "<https://www.google.co.jp/maps/dir/#{URI.encode(address)}/@#{location["latitude"]},#{location["longitude"]}/#{URI.encode(places[0]["name"])}/@#{places[0]["latitude"]},#{places[0]["longitude"]}|A>"
-    dir_b = "<https://www.google.co.jp/maps/dir/#{URI.encode(address)}/@#{location["latitude"]},#{location["longitude"]}/#{URI.encode(places[1]["name"])}/@#{places[1]["latitude"]},#{places[1]["longitude"]}|B>"
-    dir_c = "<https://www.google.co.jp/maps/dir/#{URI.encode(address)}/@#{location["latitude"]},#{location["longitude"]}/#{URI.encode(places[2]["name"])}/@#{places[2]["latitude"]},#{places[2]["longitude"]}|C>"
+    dir_a = "<https://www.google.co.jp/maps/dir/#{URI.encode(address)},#{URI.encode(location["address"])}/@#{location["latitude"]},#{location["longitude"]}/#{URI.encode(places[0]["name"])}/@#{places[0]["latitude"]},#{places[0]["longitude"]}|A>"
+    dir_b = "<https://www.google.co.jp/maps/dir/#{URI.encode(address)},#{URI.encode(location["address"])}/@#{location["latitude"]},#{location["longitude"]}/#{URI.encode(places[1]["name"])}/@#{places[1]["latitude"]},#{places[1]["longitude"]}|B>"
+    dir_c = "<https://www.google.co.jp/maps/dir/#{URI.encode(address)},#{URI.encode(location["address"])}/@#{location["latitude"]},#{location["longitude"]}/#{URI.encode(places[2]["name"])}/@#{places[2]["latitude"]},#{places[2]["longitude"]}|C>"
     
     
     return {text: "#{user_name}\n最寄りの#{placetype}3件は以下の通りです．A,B,Cのリンクをクリックして経路を確認できます．\n#{dir_a}:#{msg[0]}\n#{dir_b}:#{msg[1]}\n#{dir_c}:#{msg[2]}\n#{map_short_url}"}.merge(options).to_json
@@ -262,10 +264,10 @@ class MySlackBot < SlackBot
     input = params[:text]
     if input =~ /[^「]*「(.*)」と言って/
       bot.repeat_respond(params, options)
-    elsif input =~ /@NBot\s+(.*)(付近|近く)の(.*)/
+    elsif input =~ /@NBot\s+(.*)(付近|近く|周辺)の(.*)/
       bot.respond_places(params, options)
     else
-      return {text: "#{user_name}\nExample:\"〇〇付近の〇〇\",\ \"「〇〇」と言って\"\n"}.merge(options).to_json
+      return {text: "Hi! #{user_name}\nUsage:\"〇〇付近の〇〇\",\ \"「〇〇」と言って\"\n"}.merge(options).to_json
     end
   end
 end

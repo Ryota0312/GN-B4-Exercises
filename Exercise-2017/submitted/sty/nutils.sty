@@ -1,0 +1,111 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Some short utils for writing papers
+% Yoshinari Nomura
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NeedsTeXFormat{pLaTeX2e}
+\ProvidesPackage{nutils}[2014/11/22 v1.0 by Yoshinari Nomura]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% References
+%
+% Usage: \figref{label}
+% Usage: \tabref{label}
+%
+
+\providecommand{\figref}[1]{図~\nobreak\ref{#1}}
+\providecommand{\tabref}[1]{表~\nobreak\ref{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Insert figure
+
+% Usage: \insertfigure[magnification]{label}{filename}{caption}{ecaption}
+% Exsample: \insertfigure[0.8]{lbl:fig3}{fig3}{日本語キャプション}{English Caption}
+%
+% \insertwidefigure inserts a wide figure occupying two-columns.
+%
+% default magnification is 0.9.
+
+\providecommand{\figdir}{./figs}
+\providecommand{\figext}{pdf}
+\providecommand{\ecaption}[1]{}
+
+\newcommand{\insertfigurecontents}[5][1]{
+  \includegraphics[clip,width=#1\columnwidth]{\figdir/#3.\figext}
+  \caption{#4}\ecaption{#5}\label{#2}
+}
+
+\newcommand{\insertfigure}[5][0.9]{
+  \begin{figure}[tb]
+    \begin{center}
+      \insertfigurecontents[#1]{#2}{#3}{#4}{#5}
+    \end{center}
+  \end{figure}
+}
+
+\newcommand{\insertwidefigure}[5][0.9]{
+  \begin{figure*}[tb]
+    \begin{center}
+      \insertfigurecontents[#1]{#2}{#3}{#4}{#5}
+    \end{center}
+  \end{figure*}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% for latexdiff
+
+% Usage: \diffblock{Any TeX block}
+% Example: \diffblock{This block is recognized as a single block and
+%    latediff does not attempt to find diff inside the block.}
+%
+% latexdiff --append-safecmd="diffblock"
+
+\newcommand{\diffblock}[1][]{#1}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Citation
+
+\def\：{\makebox[1zw][l]{：}}
+
+\def\urlj{%
+\@ifnextchar[%% ]
+{\n@urlj}
+{\@urlj}
+}
+
+\def\n@urlj[#1]#2{%
+\normalfont 
+\if #11\relax
+入手先\\ \else%
+\fi
+\normalfont $\langle$\nobreak{#2}\nobreak$\rangle$}
+
+\def\@urlj#1{%
+\normalfont 入手先$\langle$\nobreak{#1}\nobreak$\rangle$}
+
+\def\urle{%
+\@ifnextchar[%% ]
+{\n@urle}
+{\@urle}
+}
+
+\def\n@urle[#1]#2{%
+\normalfont 
+\if #11\relax
+available \\ from \else%
+\if #12\relax
+available from \\ \else
+\fi\fi
+$\langle$\nobreak{#2}\nobreak$\rangle$}
+
+\def\@urle#1{%
+\normalfont available from $\langle$\nobreak{#1}\nobreak$\rangle$}
+
+\def\refdatej#1{\normalfont （参照{#1}）\<}
+\def\refdatee#1{\normalfont (accessed {#1})}
+
+\def\doi#1{\normalfont DOI: #1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\endinput

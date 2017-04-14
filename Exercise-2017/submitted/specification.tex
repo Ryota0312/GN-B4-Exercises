@@ -1,0 +1,92 @@
+\documentclass[fleqn, 14pt]{extarticlej}
+\oddsidemargin=-1cm
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{indentfirst}
+\textwidth=18cm
+\textheight=23cm
+\topmargin=0cm
+\headheight=1cm
+\headsep=0cm
+\footskip=1cm
+
+\def\labelenumi{(\theenumi)}
+\def\theenumii{\Alph{enumii}}
+\def\theenumiii{(\alph{enumiii})}
+\newcommand*{\figref}[1]{図\ref{#1}}
+\newcommand*{\tbref}[1]{表\ref{#1}}
+\def\：{\makebox[1zw][l]{：}}
+\usepackage{comment}
+\usepackage{url}
+\urlstyle{same}
+
+\usepackage{jtygm}  % フォントに関する余計な警告を消す
+\usepackage{nutils} % insertfigure, figef, tabref マクロ
+
+
+\begin{document}
+
+\begin{center}
+{\Large {\bf SlackBotプログラム 仕様書}}
+
+\end{center}
+
+\begin{flushright}
+  2017年4月20日\\
+  
+  乃村研究室\ 西　良太
+\end{flushright}
+
+\section{概要}
+本資料は，平成29年度GNグループB4新人研修課題にて作成したSlackBotプログラムの仕様についてまとめたものである．本プログラムは以下の2つの機能をもつ．
+
+\begin{enumerate}
+\item ``「〇〇」と言って''という発言に対して，``〇〇''と発言する．
+\item ``〇〇付近の△△''という発言に対して，〇〇で指定された場所付近の△△に関連する施設を近い順に3件検索し，施設名，住所，現在地と検索結果3件にピンを立てた地図画像を発言する．また，それぞれの施設について現在地からの経路を見ることができるリンクを付与する．
+\end{enumerate}
+
+\section{機能}
+本プログラムは\verb|Slack|での``@NBot''から始まるユーザの発言を受信し，それに対して返信する．返信される内容は``@NBot''に続く文字列により決定される．以下に本プログラムがもつ2つの機能について述べる．
+
+\begin{description}
+\item[(機能1)]``「〇〇」と言って''という発言に対して，``〇〇''と発言する機能．
+  
+  　この機能はユーザの``「〇〇」と言って''という発言に対して，一番外側の鈎括弧内の文字列を発言したユーザに返信するかたちで発言する．
+\item[(機能2)]``〇〇付近の△△''という発言に対して，〇〇で指定された場所の近くの△△に関連する施設3件の情報を発言する機能．
+  
+  　この機能ではユーザの``〇〇付近の△△''という発言に対して，〇〇で指定された場所周辺の△△という施設について以下の3つの情報をそのユーザに返信するかたちで発言する．
+
+\begin{enumerate}
+  \item 〇〇からの距離が近い△△に関連する施設3件の施設名と住所．
+  \item 〇〇からそれぞれの施設までの経路を見ることができるGoogleMapへのリンク．
+  \item 〇〇と検索された3件の施設にピンを立てた地図の画像． 
+\end{enumerate}
+
+　上記の情報はGoogole Maps Geocoding API，Google Places API，Googole Static Maps APIを利用して取得または作成している．また，地図画像のURLについてはGoogle URL Shortener APIを用いて短縮したものを使用する．
+
+\end{description}
+
+\section{動作環境}
+
+\section{動作確認済み環境}
+動作確認済み環境を以下の\tbref{tab:env}
+
+\begin{table}[t]
+  \begin{center}
+    \caption{aaa}
+    \label{tab:env}
+    \begin{tabular}{|c|l|} \hline
+      OS & Debian GNU/Linux 8.1 64bit\\ 
+      CPU & Intel(R) Core(TM) i5-4670 CPU @ 3.40GHz\\ 
+      メモリ & 1GB\\ 
+      ブラウザ & firefox 52.0.2\\ 
+      ソフトウェア & \\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\section{使用方法}
+本プログラムの使用方法について述べる．本プログラムはHeroku上で動作するため，Herokuへのデプロイを行うことにより使用することができる．
+
+\section{エラー処理と保証しない動作}
+
+\end{document}
