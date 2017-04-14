@@ -272,7 +272,6 @@ class MySlackBot < SlackBot
   end
 end
 
-
 slackbot = MySlackBot.new
 
 set :environment, :production

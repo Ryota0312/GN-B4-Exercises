@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.14159265-p3.5-130605-2.6 (utf8.euc) (TeX Live 2015/dev/Debian) (preloaded format=platex 2017.4.4)  14 APR 2017 13:06
+This is e-pTeX, Version 3.14159265-p3.5-130605-2.6 (utf8.euc) (TeX Live 2015/dev/Debian) (preloaded format=platex 2017.4.4)  14 APR 2017 16:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -99,15 +99,15 @@ LaTeX Font Info:    ... okay on input line 26.
 
 ]
 LaTeX Font Info:    External font `cmex7' loaded for size
-(Font)              <7> on input line 77.
- [2] (./specification.aux) ) 
+(Font)              <7> on input line 79.
+ [2] [3] (./specification.aux) ) 
 Here is how much of TeX's memory you used:
- 772 strings out of 494934
- 11438 string characters out of 6180150
- 63983 words of memory out of 5000000
- 4157 multiletter control sequences out of 15000+600000
- 11821 words of font info for 48 fonts, out of 8000000 for 9000
+ 776 strings out of 494934
+ 11516 string characters out of 6180150
+ 64983 words of memory out of 5000000
+ 4162 multiletter control sequences out of 15000+600000
+ 13186 words of font info for 53 fonts, out of 8000000 for 9000
  264 hyphenation exceptions out of 8191
- 25i,7n,24p,285b,263s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 25i,8n,24p,283b,284s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on specification.dvi (2 pages, 4976 bytes).
+Output written on specification.dvi (3 pages, 6048 bytes).
