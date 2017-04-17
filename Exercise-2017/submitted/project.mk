@@ -4,7 +4,7 @@
 
 # if the main TeX file is ``myproject.tex'', set:
 #   PROJECT = myproject
-PROJECT = report
+PROJECT = specification
 PROJECT_BIB = mybibdata.bib
 
 # All figure files are extracted from the single PDF file: FIG_MASTER_FILE.
