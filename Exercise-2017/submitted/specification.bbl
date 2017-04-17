@@ -1,0 +1,21 @@
+\begin{thebibliography}{1}
+
+\bibitem{GoogleGeocodingAPI}
+{Google Inc.}: Google Maps Geocoding API, Google (online),
+  \urle{https://developers.google.com/maps/documentation/geocoding/start}
+  \refdatee{2017-4-17}.
+
+\bibitem{GooglePlacesAPI}
+{Google Inc.}: Google Places API, Google (online),
+  \urle{https://developers.google.com/places/} \refdatee{2017-4-17}.
+
+\bibitem{GoogleStaticMapsAPI}
+{Google Inc.}: Google Static Maps API, Google (online),
+  \urle{https://developers.google.com/maps/documentation/static-maps/}
+  \refdatee{2017-4-17}.
+
+\bibitem{GoogleURLShortenerAPI}
+{Google Inc.}: Google URL Shotener API, Google (online),
+  \urle{https://developers.google.com/url-shortener/} \refdatee{2017-4-17}.
+
+\end{thebibliography}

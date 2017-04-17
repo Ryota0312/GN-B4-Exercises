@@ -1,39 +1,38 @@
 This is pBibTeX, Version 0.99d-j0.33 (utf8.euc) (TeX Live 2015/dev/Debian)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: specification.aux
-I found no \citation commands---while reading file specification.aux
-I found no \bibdata command---while reading file specification.aux
-I found no \bibstyle command---while reading file specification.aux
-You've used 0 entries,
-            0 wiz_defined-function locations,
-            84 strings with 513 characters,
-and the built_in function-call counts, 0 in all, are:
-= -- 0
-> -- 0
+The style file: ipsjunsrt.bst
+Database file #1: mybibdata.bib
+You've used 4 entries,
+            2334 wiz_defined-function locations,
+            580 strings with 4811 characters,
+and the built_in function-call counts, 557 in all, are:
+= -- 40
+> -- 16
 < -- 0
-+ -- 0
-- -- 0
-* -- 0
-:= -- 0
-add.period$ -- 0
-call.type$ -- 0
++ -- 8
+- -- 4
+* -- 38
+:= -- 98
+add.period$ -- 4
+call.type$ -- 4
 change.case$ -- 0
 chr.to.int$ -- 0
-cite$ -- 0
-duplicate$ -- 0
-empty$ -- 0
-format.name$ -- 0
-if$ -- 0
+cite$ -- 4
+duplicate$ -- 36
+empty$ -- 49
+format.name$ -- 8
+if$ -- 125
 int.to.chr$ -- 0
-int.to.str$ -- 0
+int.to.str$ -- 4
 missing$ -- 0
-newline$ -- 0
-num.names$ -- 0
-pop$ -- 0
-preamble$ -- 0
+newline$ -- 15
+num.names$ -- 4
+pop$ -- 8
+preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 0
+skip$ -- 20
 stack$ -- 0
 substring$ -- 0
 swap$ -- 0
@@ -42,8 +41,7 @@ text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 0
-width$ -- 0
-write$ -- 0
-is.kanji.str$ -- 0
-(There were 3 error messages)
+while$ -- 4
+width$ -- 5
+write$ -- 34
+is.kanji.str$ -- 28

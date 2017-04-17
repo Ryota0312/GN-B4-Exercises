@@ -31,27 +31,37 @@
 \begin{flushright}
   2017年4月20日\\
   
-  乃村研究室\ 西　良太
+  乃村研究室\ 西\ 良太
 \end{flushright}
 
 \section{概要}
 本資料は，平成29年度GNグループB4新人研修課題にて作成したSlackBotプログラムの仕様についてまとめたものである．本プログラムは以下の2つの機能をもつ．
 
 \begin{enumerate}
-\item ``「〇〇」と言って''という発言に対して，``〇〇''と発言する．
-\item ``〇〇付近の△△''という発言に対して，〇〇で指定された場所から近い△△に関連する施設とその住所を3件発言する．また，〇〇の場所と施設3件にピンを立てた地図画像を発言する．加えて，それぞれの施設について〇〇からの経路を見ることができるリンクを発言する．
+\item ``「〇〇」と言って''という発言に対して，``〇〇''と発言する機能
+\item ``〇〇付近の△△''という発言に対して，〇〇で指定された場所の近くの△△に関連する施設3件の情報を発言する機能
 \end{enumerate}
+
+\section{対象とする利用者}
+本プログラムは以下のアカウントを所有する利用者を対象としている．
+
+\begin{enumerate}
+\item Slackアカウント
+\item Googleアカウント
+\end{enumerate}
+
+Googleアカウントは本プログラムで使用するAPIのキー取得に必要である．
 
 \section{機能}
 本プログラムはSlackでの``@NBot''から始まるユーザの発言を受信し，それに対して返信する．返信される内容は``@NBot''に続く文字列により決定される．以下に本プログラムがもつ2つの機能について述べる．
 
 \begin{description}
-\item[(機能1)]``「〇〇」と言って''という発言に対して，``〇〇''と発言する機能．
+\item[(機能1)]``「〇〇」と言って''という発言に対して，``〇〇''と発言する機能
   
-  　この機能はユーザの``「〇〇」と言って''という発言に対して，一番外側の鈎括弧内の文字列を発言したユーザに返信する形式で発言する．
-\item[(機能2)]``〇〇付近の△△''という発言に対して，〇〇で指定された場所の近くの△△に関連する施設3件の情報を発言する機能．
+  　この機能はユーザの``「〇〇」と言って''という発言に対して，一番外側の鈎括弧内の文字列を発言したユーザに返信する．
+\item[(機能2)]``〇〇付近の△△''という発言に対して，〇〇で指定された場所の近くの△△に関連する施設3件の情報を発言する機能
   
-  　この機能ではユーザの``〇〇付近の△△''という発言に対して，〇〇で指定された場所周辺の△△という施設について以下の3つの情報をそのユーザに返信する形式で発言する．
+  　この機能はユーザの``〇〇付近の△△''という発言に対して，〇〇で指定された場所周辺の△△という施設について以下の3つの情報をそのユーザに返信する．
 
 \begin{enumerate}
   \item 〇〇からの距離が近い△△に関連する施設3件の施設名と住所．
@@ -59,11 +69,16 @@
   \item 〇〇と検索された3件の施設にピンを立てた地図の画像． 
 \end{enumerate}
 
-　上記の情報はGoogole Maps Geocoding API，Google Places API，Googole Static Maps APIを利用して取得または作成している．また，地図画像のURLについてはGoogle URL Shortener APIを用いて短縮したものを使用する．
+　上記の情報はGoogole Maps Geocoding API\cite{GoogleGeocodingAPI}，Google Places API\cite{GooglePlacesAPI}，Googole Static Maps API\cite{GoogleStaticMapsAPI}を利用して取得または作成している．また，地図画像のURLについてはGoogle URL Shortener API\cite{GoogleURLShortenerAPI}を用いて短縮したものを使用する．
 
 \end{description}
 
-上記の(機能1)と(機能2)のどちらにも当てはまらない文字列を受信したときは，``Hi! @User''と発言する．
+上記の(機能1)と(機能2)のどちらにも当てはまらない文字列を受信したときは，以下のメッセージを発言する．
+
+\begin{verbatim}
+　　Hi! @ユーザー名
+　　Usage:"〇〇付近の〇〇", "「〇〇」と言って"
+\end{verbatim}
 
 \section{動作環境}
 本プログラムはRuby 2.1.5で動作する．また，Webアプリケーションフレームワークとしてsinatra 1.4.8を利用しているためsinatraと依存関係にある\tabref{tab:sinatra_dependent}に示すGemを必要とする．
@@ -143,7 +158,7 @@ Slackが提供するIncoming WebhooksとOutgoing Webhooksの設定手順は以�
     
     \url{https://XXXXX.slack.com/apps/manage/custom-integrations}
 
-    ただし，はチーム名．
+    ただし，XXXXXはチーム名．
     
   \item 「Incoming WebHooks」をクリックする．
   \item 「Add Configuration」をクリックし発言先のチャンネルを選択したのち「Add Incoming WebHooks integration」をクリックすることでWebHook URLを取得する．
@@ -178,35 +193,28 @@ Slackが提供するIncoming WebhooksとOutgoing Webhooksの設定手順は以�
 本プログラムが使用するGoogle APIのキー取得方法について述べる．また，APIキーを取得するためにはGoogleアカウントが必要である．
 
 \begin{description}
-\item[Google Maps Geocoding API]\
-  \begin{enumerate}
-  \item 以下のURLにアクセスし「標準 API 向けの認証」の「キーを取得する」よりAPIキーを取得する．
-
-    \url{https://developers.google.com/maps/documentation/geocoding/get-api}\\
-    \url{-key?hl=ja}
-  \end{enumerate}
-
-\item[Google Places API Web Service]\
-  \begin{enumerate}
-  \item 以下のURLにアクセスし「標準 Google Places API Web Service を使用する場合」の「キーを取得する」よりAPIキーを取得する．
-    
-    \url{https://developers.google.com/places/web-service/get-api-key?hl=ja}
-  \end{enumerate}
+\item[(1)Google Maps Geocoding API]\
   
-\item[Googole Static Maps API]\
-  \begin{enumerate}
-  \item 以下のURLにアクセスし「標準 API 向けの認証」の「キーを取得する」よりAPIキーを取得する．
-    
-    \url{https://developers.google.com/maps/documentation/static-maps/get-ap}\\
-    \url{i-key?hl=ja}
-  \end{enumerate}
+  以下のURLにアクセスし「標準 API 向けの認証」の「キーを取得する」よりAPIキーを取得する．
   
-\item[Google URL Shotener API]\
-  \begin{enumerate}
-  \item 以下のURLにアクセスし「Acquiring and using an API key」の「GET A KEY」よりAPIキーを取得する．
-    
-    \url{https://developers.google.com/url-shortener/v1/getting_started}
-  \end{enumerate}
+  \url{https://developers.google.com/maps/documentation/geocoding/get-api-key}\\
+  \url{?hl=ja}
+\item[(2)Google Places API Web Service]\
+  
+  以下のURLにアクセスし「標準 Google Places API Web Service を使用する場合」の「キーを取得する」よりAPIキーを取得する．
+  
+  \url{https://developers.google.com/places/web-service/get-api-key?hl=ja}
+\item[(3)Googole Static Maps API]\
+  
+  以下のURLにアクセスし「標準 API 向けの認証」の「キーを取得する」よりAPIキーを取得する．
+  
+  \url{https://developers.google.com/maps/documentation/static-maps/get-api-key}\\
+  \url{?hl=ja}
+\item[(4)Google URL Shotener API]\
+  
+  以下のURLにアクセスし「Acquiring and using an API key」の「GET A KEY」よりAPIキーを取得する．
+  
+  \url{https://developers.google.com/url-shortener/v1/getting_started}
 \end{description}
 
 また，取得したAPIキーは``APIconfig.yml''という名称のファイルを用意し，以下のように記述する．
@@ -233,8 +241,16 @@ Hrokuには以下のコマンドを用いてデプロイできる．
 本プログラムで行ったエラー処理を以下に示す．
 
 \begin{enumerate}
-\item (機能2)について，``〇〇付近の△△''というメッセージの〇〇の座標をGoogle Maps Geocoding APIが見つけられなかった場合，地点が特定できなかった旨をユーザに返信する形式で発言する．
-\item (機能2)について，``〇〇付近の△△''について〇〇周辺の△△に関連する施設がGoogle Places APIによって発見できなかった場合，結果が得られなかった旨をユーザに返信する形式で発言する．
+\item (機能2)について，``〇〇付近の△△''というメッセージの〇〇の座標をGoogle Maps Geocoding APIが見つけられなかった場合，以下のようにユーザに返信する．
+\begin{verbatim}
+　　@ユーザ名
+　　地点が特定できませんでした．
+\end{verbatim}
+\item (機能2)について，``〇〇付近の△△''について〇〇周辺の△△に関連する施設がGoogle Places APIによって発見できなかった場合，以下のようにユーザに返信する．
+\begin{verbatim}
+　　@ユーザ名
+　　結果が見つかりませんでした．
+\end{verbatim}
 \end{enumerate}
 \subsection{保証しない動作}
 本プログラムが保証しない動作を以下に示す．
@@ -242,4 +258,8 @@ Hrokuには以下のコマンドを用いてデプロイできる．
 \begin{enumerate}
 \item SlackのOutgoing WebHooks以外からのPOSTリクエストをブロックする動作．
 \end{enumerate}
+
+\bibliographystyle{ipsjunsrt}
+\bibliography{mybibdata}
+
 \end{document}
