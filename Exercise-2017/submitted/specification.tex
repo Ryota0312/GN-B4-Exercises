@@ -12,8 +12,6 @@
 \def\labelenumi{(\theenumi)}
 \def\theenumii{\Alph{enumii}}
 \def\theenumiii{(\alph{enumiii})}
-\newcommand*{\figref}[1]{図\ref{#1}}
-\newcommand*{\tbref}[1]{表\ref{#1}}
 \def\：{\makebox[1zw][l]{：}}
 \usepackage{comment}
 \usepackage{url}
@@ -68,39 +66,180 @@
 上記の(機能1)と(機能2)のどちらにも当てはまらない文字列を受信したときは，``Hi! @User''と発言する．
 
 \section{動作環境}
+本プログラムはRuby 2.1.5で動作する．また，Webアプリケーションフレームワークとしてsinatra 1.4.8を利用しているためsinatraと依存関係にある\tabref{tab:sinatra_dependent}に示すGemを必要とする．
 
-\section{動作確認済み環境}
-動作確認済み環境を以下の\tbref{tab:env}に示す．
 
 \begin{table}[t]
   \begin{center}
-    \caption{動作環境}
-    \label{tab:env}
-    \begin{tabular}{|c|l|} \hline
-      \multicolumn{2}{|c|}{Herokuサーバの環境}\\ \hline \hline
-      OS & Ubuntu 14.04.5 LTS\\ 
-      CPU & Intel(R) Xeon(R) CPU E5-2670 v2 @ 2.50GHz\\ 
-      メモリ & 64GB\\
-      ソフトウェア & \\ \hline
-      \multicolumn{2}{|c|}{開発環境}\\ \hline \hline
-      OS & Debian GNU/Linux 8.1 64bit\\ 
-      CPU & Intel(R) Core(TM) i5-4670 CPU @ 3.40GHz\\ 
-      メモリ & 1GB\\ 
-      ブラウザ & firefox 52.0.2\\ 
-      ソフトウェア & \\ \hline
+    \caption{sinatra1.4.8が必要とするGem}
+    \label{tab:sinatra_dependent}
+    \begin{tabular}{|c|c|} \hline
+      Gem & バージョン \\ \hline \hline
+      rack & 1.5以上2.0未満 \\
+      rack-protection & 1.4以上2.0未満 \\
+      tilt & 1.3以上3.0未満 \\ \hline
     \end{tabular}
   \end{center}
 \end{table}
 
+\section{動作確認済み環境}
+動作確認済み環境を\tabref{tab:env}に示す．bundler以外のGemはGemfileとGemfile.lockに記述されている依存関係を用いてインストールされる．
+
+\begin{table}[t]
+  \begin{center}
+    \caption{動作確認済み環境}
+    \label{tab:env}
+    \begin{tabular}{|c|l|} \hline
+      \multicolumn{2}{|c|}{デプロイ先(Heroku)の環境}\\ \hline \hline
+      OS & Ubuntu 14.04.5 LTS\\ 
+      CPU & Intel(R) Xeon(R) CPU E5-2670 v2 @ 2.50GHz\\ 
+      メモリ & 64GB\\
+      Ruby & 2.1.5p273 \\
+      Ruby Gem & bundler 1.13.7\\
+      & sinatra 1.4.8 \\
+      & rack 1.6.5 \\
+      & rack-protection 1.5.3 \\
+      & tilt 2.0.7 \\ \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\section{環境構築}
+\subsection{概要}
+本プログラムの動作のために必要な環境構築の項目を以下に示す．
+
+\begin{enumerate}
+  \item Herokuの設定
+  \item SlackのWebHookの設定
+  \item 各種Google APIのAPIキー取得
+\end{enumerate}
+
+次節でそれぞれの具体的な環境構築手順について述べる．
+
+\subsection{具体的な手順}
+\subsubsection{Herokuの設定}
+\begin{enumerate}
+\item 以下のURLよりHerokuにアクセスし，「Sign up」から新しいアカウントを登録する．
+
+  \url{https://www.heroku.com/}
+\item 登録したアカウントでログインし，「Getting Started with Heroku」の使用する言語として「Ruby」を選択する．
+\item 「I’m ready to start」をクリックし，「Download Heroku CLI for...」からCLIをダウンロードする．
+\item 以下のコマンドを実行しHerokuにログインする．
+
+  \verb|$ heroku login|
+\item 以下のコマンドを実行しHeroku上にアプリケーションを生成する．
+
+  \verb|$ heroku create <app_name>|
+\end{enumerate}
+  
+\subsubsection{SlackのWebHookの設定}
+Slackが提供するIncoming WebhooksとOutgoing Webhooksの設定手順は以下の通りである．
+
+\begin{description}
+\item[Incoming WebHooksの設定]\
+  
+  \begin{enumerate}
+  \item 以下のURLにアクセスする．
+    
+    \url{https://XXXXX.slack.com/apps/manage/custom-integrations}
+
+    ただし，はチーム名．
+    
+  \item 「Incoming WebHooks」をクリックする．
+  \item 「Add Configuration」をクリックし発言先のチャンネルを選択したのち「Add Incoming WebHooks integration」をクリックすることでWebHook URLを取得する．
+  \item 取得したURLは以下のコマンドによりHerokuの環境変数として設定する．
+
+    \verb|$ heroku config:set INCOMING_WEBHOOK_URL="https://XXXXXXXX"| 
+  \end{enumerate}
+\item[Outgoing WebHooksの設定]\
+  
+  \begin{enumerate}
+  \item 以下のURLにアクセスする．
+    
+    \url{https://XXXXX.slack.com/apps/manage/custom-integrations}
+
+    ただし，XXXXXはチーム名．
+    
+  \item 「Outgoing WebHooks」をクリックする．
+  \item 「Add Configuration」をクリックし「Add Incoming WebHooks integration」をクリックする．ここで，「Integration Settings」の以下の項目を設定する．
+    \begin{enumerate}
+    \item Channelにて発言を監視するチャンネルを選択する．
+    \item Trigger Word(s)にWebHookが動作する契機となる単語を設定する．
+    \item URL(s)にWebHookが動作した際にPOSTを行うURLを設定する．今回はHeroku上で動作させるため以下のURLを設定する．
+
+      \url{https://XXXXX.herokuapp.com/slack}
+      
+      ただし，XXXXXはHrokuに登録したアプリケーション名．
+    \end{enumerate}
+  \end{enumerate}
+\end{description}
+
+\subsubsection{各種Google APIのAPIキー取得}
+本プログラムが使用するGoogle APIのキー取得方法について述べる．また，APIキーを取得するためにはGoogleアカウントが必要である．
+
+\begin{description}
+\item[Google Maps Geocoding API]\
+  \begin{enumerate}
+  \item 以下のURLにアクセスし「標準 API 向けの認証」の「キーを取得する」よりAPIキーを取得する．
+
+    \url{https://developers.google.com/maps/documentation/geocoding/get-api}\\
+    \url{-key?hl=ja}
+  \end{enumerate}
+
+\item[Google Places API Web Service]\
+  \begin{enumerate}
+  \item 以下のURLにアクセスし「標準 Google Places API Web Service を使用する場合」の「キーを取得する」よりAPIキーを取得する．
+    
+    \url{https://developers.google.com/places/web-service/get-api-key?hl=ja}
+  \end{enumerate}
+  
+\item[Googole Static Maps API]\
+  \begin{enumerate}
+  \item 以下のURLにアクセスし「標準 API 向けの認証」の「キーを取得する」よりAPIキーを取得する．
+    
+    \url{https://developers.google.com/maps/documentation/static-maps/get-ap}\\
+    \url{i-key?hl=ja}
+  \end{enumerate}
+  
+\item[Google URL Shotener API]\
+  \begin{enumerate}
+  \item 以下のURLにアクセスし「Acquiring and using an API key」の「GET A KEY」よりAPIキーを取得する．
+    
+    \url{https://developers.google.com/url-shortener/v1/getting_started}
+  \end{enumerate}
+\end{description}
+
+また，取得したAPIキーは``APIconfig.yml''という名称のファイルを用意し，以下のように記述する．
+\begin{verbatim}
+GooglePlaces : API key
+GoogleGeocoding : API key
+GoogleStaticMaps : API key
+GoogleURLShortener : API key
+\end{verbatim}
+
 \section{使用方法}
 本プログラムの使用方法について述べる．本プログラムはHeroku上で動作するため，Herokuへデプロイすることで実行できる．
+
+Hrokuには以下のコマンドを用いてデプロイできる．
+
+\begin{verbatim}
+　　$ git push heroku master
+\end{verbatim}
 
 \section{エラー処理と保証しない動作}
 本プログラムにおけるエラー処理と保証しない動作について述べる．
 
 \subsection{エラー処理}
+本プログラムで行ったエラー処理を以下に示す．
 
+\begin{enumerate}
+\item (機能2)について，``〇〇付近の△△''というメッセージの〇〇の座標をGoogle Maps Geocoding APIが見つけられなかった場合，地点が特定できなかった旨をユーザに返信する形式で発言する．
+\item (機能2)について，``〇〇付近の△△''について〇〇周辺の△△に関連する施設がGoogle Places APIによって発見できなかった場合，結果が得られなかった旨をユーザに返信する形式で発言する．
+\end{enumerate}
 \subsection{保証しない動作}
+本プログラムが保証しない動作を以下に示す．
 
-
+\begin{enumerate}
+\item SlackのOutgoing WebHooks以外からのPOSTリクエストをブロックする動作．
+\end{enumerate}
 \end{document}

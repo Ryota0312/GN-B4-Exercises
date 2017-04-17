@@ -88,9 +88,10 @@ end
 
 # Get places by Google Places API
 class GooglePlaces < HttpRequest
-  def initialize
+  def initialize(api_config = "APIconfig.yml")
+    config = YAML.load_file(api_config)
     @base_url='https://maps.googleapis.com/maps/api/place/nearbysearch/json'
-    @api_key='AIzaSyDirkpr0Wb0_4hyBeHFsc_OotV7rq0526E'
+    @api_key=config['GooglePlaces']
   end
 
   # Get places included in 'type' near specified latitude and longitude. 
@@ -124,9 +125,10 @@ end
 
 # Get latitude and longitude from 'keyword' by Google Geocoding API
 class GoogleGeocoder < HttpRequest
-  def initialize
+  def initialize(api_config = "APIconfig.yml")
+    config = YAML.load_file(api_config)
     @base_url = 'https://maps.googleapis.com/maps/api/geocode/json'
-    @api_key='AIzaSyALN7jZSORUTLd2XPV5QC2447OX-WjNp-o'
+    @api_key=config['GoogleGeocoding']
   end
   
   def get_location_bykeyword(keyword, options={})
@@ -144,9 +146,10 @@ class GoogleGeocoder < HttpRequest
 end
 
 class GoogleStaticMaps < HttpRequest
-  def initialize
+  def initialize(api_config = "APIconfig.yml")
+    config = YAML.load_file(api_config)
     @base_url='https://maps.googleapis.com/maps/api/staticmap'
-    @api_key='AIzaSyCk4Z0EI3sj1O4l0IQZ54SOrvXq_6GJVq0'
+    @api_key=config['GoogleStaticMaps']
   end
 
   # Create map image by specified 'location' and some places.
@@ -165,9 +168,10 @@ end
 
 # Get shorted URL by Google URL Shortener API
 class GoogleUrlShortener < HttpRequest
-  def initialize
+  def initialize(api_config = "APIconfig.yml")
+    config = YAML.load_file(api_config)
     @base_url='https://www.googleapis.com/urlshortener/v1/url'
-    @api_key='AIzaSyBjSm1VYMtakSlz4E-iYI-nKDFq2NeCyYs'
+    @api_key=config['GoogleURLShortener']
   end
 
   def shorten_url(long_url)

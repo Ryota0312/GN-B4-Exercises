@@ -1,9 +1,9 @@
-This is e-pTeX, Version 3.14159265-p3.5-130605-2.6 (utf8.euc) (TeX Live 2015/dev/Debian) (preloaded format=platex 2017.4.4)  17 APR 2017 15:12
+This is e-pTeX, Version 3.14159265-p3.5-130605-2.6 (utf8.euc) (TeX Live 2015/dev/Debian) (preloaded format=platex 2017.4.4)  17 APR 2017 14:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**specification.tex
-(./specification.tex
+**report.tex
+(./report.tex
 pLaTeX2e <2006/11/10> (based on LaTeX2e <2014/05/01> patch level 0)
 Babel <3.9l> and hyphenation patterns for 11 languages loaded.
 (sty/extarticlej.cls
@@ -76,44 +76,35 @@ Package: jtygm 1998/06/12 based on v1.3 KANJI font defines
 )
 (sty/nutils.sty
 Package: nutils 2014/11/22 v1.0 by Yoshinari Nomura
-) (./specification.aux)
-\openout1 = `specification.aux'.
+) (./report.aux)
+\openout1 = `report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for JY1/mc/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for JT1/mc/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for JY1/mc/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for JT1/mc/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
  [1
 
-]
-LaTeX Font Info:    External font `cmex7' loaded for size
-(Font)              <7> on input line 76.
- [2] [3] [4]
-Overfull \hbox (1.6139pt too wide) in paragraph at lines 200--202
-[]$\OT1/cmr/m/n/14.4 https : / / developers . google . com / maps / documentati
-on / static-[]maps / get-[]ap$ 
- []
-
-[5] [6] (./specification.aux) ) 
+] [2] (./report.aux) ) 
 Here is how much of TeX's memory you used:
- 779 strings out of 494934
- 11575 string characters out of 6180150
- 65977 words of memory out of 5000000
- 4164 multiletter control sequences out of 15000+600000
- 13355 words of font info for 54 fonts, out of 8000000 for 9000
+ 758 strings out of 494934
+ 11207 string characters out of 6180150
+ 63977 words of memory out of 5000000
+ 4146 multiletter control sequences out of 15000+600000
+ 9815 words of font info for 40 fonts, out of 8000000 for 9000
  264 hyphenation exceptions out of 8191
- 25i,8n,24p,283b,350s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 25i,4n,24p,209b,226s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on specification.dvi (6 pages, 14500 bytes).
+Output written on report.dvi (2 pages, 2476 bytes).

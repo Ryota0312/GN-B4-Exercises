@@ -1,13 +1,72 @@
-\documentclass[11pt]{jarticle}
-\textwidth=15cm
-\usepackage{graphicx}
-\usepackage{bm}
-\usepackage[top=30truemm,bottom=30truemm,left=15truemm,right=15truemm]{geometry}
+\documentclass[fleqn, 14pt]{extarticlej}
+\oddsidemargin=-1cm
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{indentfirst}
+\textwidth=18cm
+\textheight=23cm
+\topmargin=0cm
+\headheight=1cm
+\headsep=0cm
+\footskip=1cm
+
+\def\labelenumi{(\theenumi)}
+\def\theenumii{\Alph{enumii}}
+\def\theenumiii{(\alph{enumiii})}
+\def\：{\makebox[1zw][l]{：}}
+\usepackage{comment}
+\usepackage{url}
+\urlstyle{same}
+
+\usepackage{jtygm}  % フォントに関する余計な警告を消す
+\usepackage{nutils} % insertfigure, figef, tabref マクロ
+
 \begin{document}
 
-\title{平成29年度 GNグループB4新人研修課題 報告書}
-\date{出題日:2016年11月10日\\提出日:2016年12月XX日\\締切日:2016年12月6日\\}
-\author{氏名:西　良太\\学生番号:09426565}
-\maketitle
+\begin{center}
+{\Large {\bf 平成29年度GNグループB4新人研修課題 報告書}}
+
+\end{center}
+
+\begin{flushright}
+  2017年4月20日\\
+  
+  乃村研究室\ 西　良太
+\end{flushright}
+
+\section{概要}
+本資料は平成29年度GNグループB4新人研修課題の報告書である．本資料では，課題内容，理解できなかった部分，作成できなかった機能，自主的に作成した機能について述べる．
+
+\section{課題内容}
+RubyによるSlackBotプログラムを作成する．具体的には以下の2つを行う．
+
+\begin{enumerate}
+\item 任意の文字列を発言するプログラムの作成
+\item SlackBotプログラムへの機能追加
+\end{enumerate}
+
+SlackBotの作成に用いたRubyのバージョンは2.1.5である．
+
+\section{理解できなかった部分}
+理解できなかった部分は以下の2点である．
+
+\begin{enumerate}
+\item Rackの仕組みについて．
+\item Bundlerの後方互換性の有無について．
+\end{enumerate}
+
+\section{作成できなかった機能}
+作成できなかった機能を以下に示す．
+
+\begin{enumerate}
+\item 指定したOutgoing WebHooks以外からのPOSTを拒否する機能
+\item 周辺施設の検索において表示結果の数を指定する機能．
+\end{enumerate}
+
+\section{自主的に作成した機能}
+自主的に作成した機能を以下に示す．
+
+\begin{enumerate}
+\item 地名，建物名等から指定したキーワードに関連する施設を検索して発言する機能．また，それらの位置を示す地図画像と経路を見ることができるGoogleMapのURLを発言する機能．
+\end{enumerate}
 
 \end{document}
