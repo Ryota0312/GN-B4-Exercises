@@ -58,7 +58,7 @@ Googleアカウントは本プログラムで使用するAPIのキー取得に�
 \begin{description}
 \item[(機能1)]``「〇〇」と言って''という発言に対して，``〇〇''と発言する機能
   
-  　この機能はユーザの``「〇〇」と言って''という発言に対して，一番外側の鈎括弧内の文字列を発言したユーザに返信する．
+  　この機能はユーザの``「〇〇」と言って''という発言に対して，一番外側の鈎括弧内の文字列をユーザに返信する．たとえば``「「例」と言って''に対しては``「例''と返信する．
 \item[(機能2)]``〇〇付近の△△''という発言に対して，〇〇で指定された場所の近くの△△に関連する施設3件の情報を発言する機能
   
   　この機能はユーザの``〇〇付近の△△''という発言に対して，〇〇で指定された場所周辺の△△という施設について以下の3つの情報をそのユーザに返信する．
@@ -145,13 +145,15 @@ Googleアカウントは本プログラムで使用するAPIのキー取得に�
 \item 以下のコマンドを実行しHeroku上にアプリケーションを生成する．
 
   \verb|$ heroku create <app_name>|
+
+  ここで\verb|<app_name>|は任意のアプリケーション名．
 \end{enumerate}
   
 \subsubsection{SlackのWebHookの設定}
 Slackが提供するIncoming WebhooksとOutgoing Webhooksの設定手順は以下の通りである．
 
-\begin{description}
-\item[Incoming WebHooksの設定]\
+\begin{enumerate}
+\item Incoming WebHooksの設定
   
   \begin{enumerate}
   \item 以下のURLにアクセスする．
@@ -166,7 +168,7 @@ Slackが提供するIncoming WebhooksとOutgoing Webhooksの設定手順は以�
 
     \verb|$ heroku config:set INCOMING_WEBHOOK_URL="https://XXXXXXXX"| 
   \end{enumerate}
-\item[Outgoing WebHooksの設定]\
+\item Outgoing WebHooksの設定
   
   \begin{enumerate}
   \item 以下のURLにアクセスする．
@@ -184,38 +186,38 @@ Slackが提供するIncoming WebhooksとOutgoing Webhooksの設定手順は以�
 
       \url{https://XXXXX.herokuapp.com/slack}
       
-      ただし，XXXXXはHrokuに登録したアプリケーション名．
+      ただし，XXXXXはHerokuに登録したアプリケーション名．
     \end{enumerate}
   \end{enumerate}
-\end{description}
+\end{enumerate}
 
 \subsubsection{各種Google APIのAPIキー取得}
 本プログラムが使用するGoogle APIのキー取得方法について述べる．また，APIキーを取得するためにはGoogleアカウントが必要である．
 
-\begin{description}
-\item[(1)Google Maps Geocoding API]\
+\begin{enumerate}
+\item Google Maps Geocoding API
   
   以下のURLにアクセスし「標準 API 向けの認証」の「キーを取得する」よりAPIキーを取得する．
   
   \url{https://developers.google.com/maps/documentation/geocoding/get-api-key}\\
   \url{?hl=ja}
-\item[(2)Google Places API Web Service]\
+\item Google Places API Web Service
   
   以下のURLにアクセスし「標準 Google Places API Web Service を使用する場合」の「キーを取得する」よりAPIキーを取得する．
   
   \url{https://developers.google.com/places/web-service/get-api-key?hl=ja}
-\item[(3)Googole Static Maps API]\
+\item Googole Static Maps API
   
   以下のURLにアクセスし「標準 API 向けの認証」の「キーを取得する」よりAPIキーを取得する．
   
   \url{https://developers.google.com/maps/documentation/static-maps/get-api-key}\\
   \url{?hl=ja}
-\item[(4)Google URL Shotener API]\
+\item Google URL Shotener API
   
   以下のURLにアクセスし「Acquiring and using an API key」の「GET A KEY」よりAPIキーを取得する．
   
   \url{https://developers.google.com/url-shortener/v1/getting_started}
-\end{description}
+\end{enumerate}
 
 また，取得したAPIキーは``APIconfig.yml''という名称のファイルを用意し，以下のように記述する．
 \begin{verbatim}
